@@ -25,10 +25,27 @@ User.init (
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [4]
+                len: [6]
             }
         }
+    },
+    {
+        hooks: {
+            beforeCreate(userData) {
+                userData.password = await bcrypt.hash(userData.password, 10);
+                return userData;
+            },
+            beforeUpdate(updateData) {
+                updateData.password = await bcrypt.hash(updateData.password, 10);
+                return updateData;
+            }
+        },
+        sequelize,
+        timestamps: false,
+        freezeTableName: true,
+        underscored: true,
+        modelName: "user"
     }
-)
+);
 
 module.exports = User;
