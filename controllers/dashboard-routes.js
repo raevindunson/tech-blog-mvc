@@ -9,13 +9,3 @@ const auth = require("../utils/auth")
 module.exports = router;
 
 // Routes
-router.get("/", auth, (req, res) => {
-    Post.find({
-        where: {
-            user_id: req.session.user_id
-        },
-        attributes: [
-            "id",
-        ]
-    })
-})
