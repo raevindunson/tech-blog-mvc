@@ -1,10 +1,14 @@
+//Dependencies
+
 const express = require("express");
-const sequelize = require("path");
+const path = require("path");
 const expressHandlebars = require("express-handlebars");
 const expressSession = require("express-session");
+const he
 
 const PORT = process.env.PORT || 3001;
 
-const app = express();
+const sequelizeStore = require("connect-session-sequelize")(expressSession.Store);
 
-const sequelizeStore = require("connect")
+// Initialize
+const app = express();
