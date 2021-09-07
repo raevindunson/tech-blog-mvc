@@ -52,3 +52,51 @@ router.get("/", auth, (req, res) => {
     });
 });
 
+router.get("/edit/:id", auth, (req, res) => {
+    Post.findOne({
+        where: {
+            id: req.params.id
+        },
+        attributes: [
+            "id",
+            "title",
+            "content",
+            "created"
+        ],
+        include: [
+            {
+                model: Comment,
+                attributes: ["id","user_id","post_id", "comments", "created"],
+                include:{
+                    model: User,
+                    attributes: ["username"]
+                }
+            },
+            {
+                model: User,
+                attributes: ["username"]
+            }
+        ]
+    })
+    .then((dbPostData) => {
+        if (!dbPostData) {
+            res.status(404)
+            .json({MessageEvent: "No post was found based on this id"});
+            return;
+        }
+        const post = dbPostData.get({plain: true});
+        res.render('edit-post', {post, loggedIn: true});
+    })
+    .catch((err) => {
+        console.log(err);
+        res.status(500)
+        .json(err);
+    });
+});
+
+router.get("/edit", auth, (req, res) => {
+    User.findOne({
+    })
+})
+
+module.exports = router;
